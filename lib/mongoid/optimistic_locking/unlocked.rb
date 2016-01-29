@@ -13,10 +13,19 @@ module Mongoid
         Threaded.optimistic_locking?
       end
 
+      def clear_options!
+        Threaded.unlocked = false
+        self
+      end
+
       module ClassMethods
 
         def unlocked
           Threaded.unlocked = true
+        end
+
+        def clear_options!
+          Threaded.unlocked = false
         end
 
       end
