@@ -39,8 +39,8 @@ module Mongoid
         result = super
         if optimistic_locking? && lock_version_for_selector
           key =
-            if metadata && metadata.embedded?
-              path = metadata.path(self)
+            if __metadata && __metadata.embedded?
+              path = __metadata.path(self)
               "#{path.path}._lock_version"
             else
               '_lock_version'
