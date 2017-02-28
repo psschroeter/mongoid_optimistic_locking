@@ -9,7 +9,7 @@ module Mongoid
         end
       end
 
-      def update(options = {})
+      def update_document(options = {})
         return super unless optimistic_locking? && valid?
         set_lock_version_for_selector do
           increment_lock_version do
