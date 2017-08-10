@@ -23,7 +23,7 @@ module Mongoid
         end
       end
 
-      def remove(options = {})
+      def delete(options = {})
         return super unless optimistic_locking? && persisted?
         # we need to just see if the document exists and got updated with
         # a higher lock version

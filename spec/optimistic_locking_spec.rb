@@ -38,6 +38,7 @@ describe Mongoid::OptimisticLocking do
       include Mongoid::OptimisticLocking
       embedded_in :state, :inverse_of => :flag
       field :color
+      field :color
     end
 
     class City
@@ -148,7 +149,7 @@ describe Mongoid::OptimisticLocking do
 
       it 'should raise an exception when destroying the second' do
         expect {
-          @p2.remove
+          @p2.destroy
         }.to raise_error(Mongoid::Errors::StaleDocument)
         Person.count.should == 1
       end
@@ -257,7 +258,7 @@ describe Mongoid::OptimisticLocking do
       flag2 = State.find(state.id).flag
       flag1.update_attribute :color, 'Green'
       expect {
-        flag2.remove
+        flag2.destroy
       }.to raise_error(Mongoid::Errors::StaleDocument)
     end
 
