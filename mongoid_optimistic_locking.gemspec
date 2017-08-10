@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.summary     = %q{Allows optimisitic locking for Mongoid models}
   s.description = %q{Allows optimisitic locking for Mongoid models. See https://github.com/burgalon/mongoid_optimistic_locking}
 
-  s.add_dependency 'mongoid', '>= 3.0.0rc'
+  s.add_dependency 'mongoid', '~> 5.0'
   s.add_development_dependency 'rake', '~> 0.9.0'
   s.add_development_dependency 'rspec', '~> 2.6'
 

@@ -68,14 +68,14 @@ describe Mongoid::OptimisticLocking do
 
     it 'should allow collisions when saving' do
       c1.name = 'Biz'
-      c1.save.should be_true
+      c1.save.should be_truthy
       c2.name = 'Baz'
-      c2.save.should be_true
+      c2.save.should be_truthy
     end
 
     it 'should allow collisions when destroying' do
-      c1.destroy.should be_true
-      c2.destroy.should be_true
+      c1.destroy.should be_truthy
+      c2.destroy.should be_truthy
     end
 
   end
@@ -86,19 +86,19 @@ describe Mongoid::OptimisticLocking do
 
     it 'should allow creating' do
       person._lock_version.should == 1
-      person.save.should be_true
+      person.save.should be_truthy
       person._lock_version.should == 2
       Person.count.should == 1
     end
 
     it 'should allow updating' do
       person.name = 'Chris'
-      person.save.should be_true
+      person.save.should be_truthy
       person._lock_version.should == 2
     end
 
     it 'should allow destroying after create' do
-      person.destroy.should be_true
+      person.destroy.should be_truthy
       person.should be_frozen
       person._lock_version.should == 1
       Person.count.should == 0
@@ -106,7 +106,7 @@ describe Mongoid::OptimisticLocking do
 
     it 'should allow destroying from find' do
       another = Person.find(person.id)
-      another.destroy.should be_true
+      another.destroy.should be_truthy
       another.should be_frozen
       another._lock_version.should == 1
       Person.count.should == 0
@@ -119,7 +119,7 @@ describe Mongoid::OptimisticLocking do
         @p2 = Person.find(@p1.id)
         @p3 = Person.find(@p1.id)
         @p1.name = 'Michael'
-        @p1.save.should be_true
+        @p1.save.should be_truthy
       end
 
       it 'should raise an exception when updating the second' do
@@ -131,13 +131,13 @@ describe Mongoid::OptimisticLocking do
     
       it 'should succeed when updating the second without locking' do
         @p2.name = 'George'
-        @p2.unlocked.save.should be_true
+        @p2.unlocked.save.should be_truthy
       end
     
       it 'should succeed when updating the second without locking, ' +
          'then raise an exception when updating the third' do
         @p2.name = 'George'
-        @p2.unlocked.save.should be_true
+        @p2.unlocked.save.should be_truthy
         expect {
           @p3.name = 'Sally'
           @p3.save
@@ -182,11 +182,6 @@ describe Mongoid::OptimisticLocking do
       Car.count.should == 0
     end
 
-    it 'should give a deprecation warning for #save_optimistic!' do
-      ::ActiveSupport::Deprecation.should_receive(:warn).once
-      person.save_optimistic!
-    end
-
   end
 
   context 'optimistic locking on a document with validation' do
@@ -209,12 +204,12 @@ describe Mongoid::OptimisticLocking do
 
     it 'should be savable with no embeds' do
       state.name = 'Nevada'
-      state.save.should be_true
+      state.save.should be_truthy
     end
 
     it 'should be savable with a built embed' do
       state.build_flag(:color => 'Red')
-      state.save.should be_true
+      state.save.should be_truthy
     end
 
     it 'should allow creating the embed' do
@@ -241,7 +236,7 @@ describe Mongoid::OptimisticLocking do
       flag2 = State.find(state.id).flag
       flag1.color = 'Green'
       state.save # doesn't increment lock version
-      flag2.update_attribute(:color, 'Purple').should be_true
+      flag2.update_attribute(:color, 'Purple').should be_truthy
     end
 
     it 'should raise an exception on update when another process updated it' do
@@ -270,17 +265,17 @@ describe Mongoid::OptimisticLocking do
 
     it 'should be savable with no embeds' do
       state.name = 'Nevada'
-      state.save.should be_true
+      state.save.should be_truthy
     end
 
     it 'should be savable with a built embed' do
       state.cities.build(:name => 'Los Angeles')
-      state.save.should be_true
+      state.save.should be_truthy
     end
 
     it 'should allow embedded build to save' do
       city = state.cities.build(:name => 'Los Angeles')
-      city.save.should be_true
+      city.save.should be_truthy
     end
 
     it 'should allow embedded create' do
@@ -307,14 +302,6 @@ describe Mongoid::OptimisticLocking do
       city._lock_version.should == 1
     end
 
-  end
-
-  it 'should give a deprecation warning for including Mongoid::Lockable' do
-    ::ActiveSupport::Deprecation.should_receive(:warn).once
-    Class.new do
-      include Mongoid::Document
-      include Mongoid::Lockable
-    end
   end
 
 end

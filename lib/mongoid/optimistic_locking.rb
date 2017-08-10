@@ -1,7 +1,5 @@
 require 'mongoid'
 require 'mongoid/errors/stale_document'
-require 'mongoid/lockable'
-require 'mongoid/optimistic_locking/deprecated'
 require 'mongoid/optimistic_locking/lock_version'
 require 'mongoid/optimistic_locking/operations'
 require 'mongoid/optimistic_locking/threaded_with_unlocked'
@@ -26,7 +24,6 @@ module Mongoid
 
     extend ActiveSupport::Concern
 
-    include Deprecated
     include LockVersion
     include Operations
     include Unlocked
