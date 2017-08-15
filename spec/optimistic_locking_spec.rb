@@ -133,14 +133,12 @@ describe Mongoid::OptimisticLocking do
       it 'should succeed when updating the second without locking' do
         @p2.name = 'George'
         @p2.unlocked.save.should be_truthy
-        @p2.clear_options!
       end
     
       it 'should succeed when updating the second without locking, ' +
          'then raise an exception when updating the third' do
         @p2.name = 'George'
         @p2.unlocked.save.should be_truthy
-        @p2.clear_options!
         expect {
           @p3.name = 'Sally'
           @p3.save
@@ -156,14 +154,12 @@ describe Mongoid::OptimisticLocking do
 
       it 'should succeed when destroying the second without locking' do
         @p2.unlocked.destroy
-        @p2.clear_options!
         Person.count.should == 0
       end
 
       it 'should succeed when destroying the second without locking, ' +
          'and succeed when destroying the third with locking' do
         @p2.unlocked.destroy
-        @p2.clear_options!
         Person.count.should == 0
         @p3.destroy.should
       end

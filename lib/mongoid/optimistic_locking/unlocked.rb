@@ -1,35 +1,16 @@
 module Mongoid
   module OptimisticLocking
     module Unlocked
-
-      extend ActiveSupport::Concern
+      attr_writer :unlocked
 
       def unlocked
-        Threaded.unlocked = true
+        @unlocked = true
         self
       end
 
-      def optimistic_locking?
-        Threaded.optimistic_locking?
+      def unlocked?
+        @unlocked || false
       end
-
-      def clear_options!
-        Threaded.unlocked = false
-        self
-      end
-
-      module ClassMethods
-
-        def unlocked
-          Threaded.unlocked = true
-        end
-
-        def clear_options!
-          Threaded.unlocked = false
-        end
-
-      end
-
     end
   end
 end
